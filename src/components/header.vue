@@ -121,7 +121,10 @@ export default {
     };
   },
   mounted() {
-    if (localStorage) {
+    if (
+      localStorage.getItem("protagonists") &&
+      localStorage.getItem("antagonists")
+    ) {
       this.protagonists = JSON.parse(localStorage.getItem("protagonists"));
       this.antagonists = JSON.parse(localStorage.getItem("antagonists"));
     } else {
