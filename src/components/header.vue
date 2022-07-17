@@ -2,7 +2,7 @@
   <div class="header pa-3">
     <div class="d-flex justify-space-between align-center">
       <v-btn color="primary" @click="candidates_view = true">candidatos</v-btn>
-      <v-btn color="success">pontuação</v-btn>
+      <v-btn color="success" @click="candidates_data = true">pontuação</v-btn>
     </div>
     <v-dialog v-model="candidates_view" width="500">
       <v-card>
@@ -56,6 +56,38 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <v-dialog v-model="candidates_data">
+      <v-row>
+        <v-col>
+          <h2 class="white--text text-center">Protagonistas</h2>
+          <v-data-table
+            :headers="headers"
+            :items="protagonists"
+            :items-per-page="5"
+            :custom-sort="customSort"
+            class="elevation-1"
+          >
+            <template #[`item.pic`]="{ item }">
+              <img :src="item.pic" style="width: 60px; height: 60px" />
+            </template>
+          </v-data-table>
+        </v-col>
+        <v-col>
+          <h2 class="white--text text-center">Antagonistas</h2>
+          <v-data-table
+            :headers="headers"
+            :items="antagonists"
+            :items-per-page="5"
+            :custom-sort="customSort"
+            class="elevation-1"
+          >
+            <template #[`item.pic`]="{ item }">
+              <img :src="item.pic" style="width: 60px; height: 60px" />
+            </template>
+          </v-data-table>
+        </v-col>
+      </v-row>
+    </v-dialog>
   </div>
 </template>
 
@@ -66,14 +98,48 @@ export default {
   data() {
     return {
       candidates_view: false,
+      candidates_data: false,
       protagonists: [],
       antagonists: [],
+      headers: [
+        {
+          text: "Foto",
+          align: "start",
+          sortable: false,
+          value: "pic",
+          width: "10px",
+        },
+        {
+          text: "Nome",
+          sortable: false,
+          value: "name",
+        },
+        { text: "Partido", value: "partido", sortable: false },
+        { text: "Número", value: "number", sortable: false },
+        { text: "Votos", value: "votes" },
+      ],
     };
   },
   mounted() {
-    this.protagonists = candidates_list.protagonists_data;
-    this.antagonists = candidates_list.antagonists_data;
-    console.log(this.protagonists);
+    if (localStorage) {
+      this.protagonists = JSON.parse(localStorage.getItem("protagonists"));
+      this.antagonists = JSON.parse(localStorage.getItem("antagonists"));
+    } else {
+      this.protagonists = candidates_list.protagonists_data;
+      this.antagonists = candidates_list.antagonists_data;
+    }
+  },
+  methods: {
+    customSort(items, index, isDesc) {
+      items.sort((a, b) => {
+        if (isDesc != "false") {
+          return a[index] < b[index] ? -1 : 1;
+        } else {
+          return b[index] < a[index] ? -1 : 1;
+        }
+      });
+      return items;
+    },
   },
 };
 </script>

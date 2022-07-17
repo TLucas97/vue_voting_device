@@ -181,21 +181,27 @@ export default {
     };
   },
   mounted() {
-    this.protagonists = candidates_list.protagonists_data;
-    this.antagonists = candidates_list.antagonists_data;
+    if (
+      localStorage.getItem("protagonists") &&
+      localStorage.getItem("antagonists")
+    ) {
+      this.protagonists = JSON.parse(localStorage.getItem("protagonists"));
+      this.antagonists = JSON.parse(localStorage.getItem("antagonists"));
+    } else {
+      this.protagonists = candidates_list.protagonists_data;
+      this.antagonists = candidates_list.antagonists_data;
+    }
   },
   methods: {
     vote(value) {
       if (this.villains_turn === false) {
         if (this.voteValue.length < 2) {
           this.voteValue.push(value);
-          console.log(this.voteValue);
           this.voteState = "voting";
         }
       } else {
         if (this.voteValue.length < 3) {
           this.voteValue.push(value);
-          console.log(this.voteValue);
           this.voteState = "voting";
         }
       }
@@ -237,6 +243,18 @@ export default {
     },
     confirm() {
       if (this.villains_turn === false) {
+        this.protagonists.map((candidate) => {
+          if (candidate.number === this.candidate.number) {
+            this.candidate.votes += 1;
+            this.protagonists.splice(
+              this.protagonists.indexOf(candidate),
+              1,
+              this.candidate
+            );
+          }
+        });
+        console.log("numbers?", this.protagonists);
+        localStorage.setItem("protagonists", JSON.stringify(this.protagonists));
         this.villains_turn = true;
         this.voteState = "start";
         this.candidate_view = true;
@@ -244,6 +262,17 @@ export default {
         this.voteValue = [];
         this.voting_title = "MELHOR ANTAGONISTA";
       } else {
+        this.antagonists.map((candidate) => {
+          if (candidate.number === this.candidate.number) {
+            this.candidate.votes += 1;
+            this.antagonists.splice(
+              this.antagonists.indexOf(candidate),
+              1,
+              this.candidate
+            );
+          }
+        });
+        localStorage.setItem("antagonists", JSON.stringify(this.antagonists));
         this.villains_turn = false;
         this.voteState = "start";
         this.candidate_view = true;
