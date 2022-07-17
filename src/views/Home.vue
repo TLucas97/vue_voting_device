@@ -28,9 +28,9 @@
           <v-card-text>
             <div class="text-h5 pa-5">
               Parabéns! Seu voto já está contabilizado. Para acessar as
-              pontuações basta
+              pontuações basta clicar em
               <span class="text-decoration-underline primary--text"
-                >clicar aqui</span
+                >pontuação</span
               >.
             </div>
           </v-card-text>
