@@ -1,4 +1,4 @@
-# urna_vue
+# urna_vue_custom
 
 ## Project setup
 ```
