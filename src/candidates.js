@@ -166,13 +166,6 @@ const candidates_list = {
       votes: 0,
     },
     {
-      pic: require("./assets/amber.jpg"),
-      name: "Amber Heard",
-      partido: "The Anti-depp's",
-      number: 400,
-      votes: 0,
-    },
-    {
       pic: require("./assets/evilstrange.jpg"),
       name: "Evil Dr. Strange",
       partido: "Unlimited Powers Seekers",
